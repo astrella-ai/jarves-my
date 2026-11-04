@@ -1,0 +1,8 @@
+{
+  "name": "Jarves - AI Personal Assistant",
+  "description": "Sophisticated Jarvis-inspired personal assistant and executive productivity hub with voice interaction, daily briefings, task management, and system diagnostics.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
