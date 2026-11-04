@@ -18,13 +18,14 @@ import { SystemTelemetry } from './components/SystemTelemetry';
 import { TaskManager } from './components/TaskManager';
 import { ChatInterface } from './components/ChatInterface';
 import { NotesVault } from './components/NotesVault';
+import { DevelopmentTerminal } from './components/DevelopmentTerminal';
 import { playSound } from './utils/audio';
 
 export function App() {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [voiceEnabled, setVoiceEnabled] = useState<boolean>(true);
   const [voiceState, setVoiceState] = useState<'idle' | 'listening' | 'processing' | 'speaking'>('idle');
-  const [activeTab, setActiveTab] = useState<'OVERVIEW' | 'TASKS' | 'VAULT'>('OVERVIEW');
+  const [activeTab, setActiveTab] = useState<'OVERVIEW' | 'TASKS' | 'TERMINAL' | 'VAULT'>('OVERVIEW');
   const [statusMessage, setStatusMessage] = useState<string>('SYSTEM PROTOCOLS RUNNING AT 100% NOMINAL EFFICIENCY');
 
   const toggleSound = () => {
@@ -74,7 +75,7 @@ export function App() {
 
           {/* Center Navigation Tabs */}
           <div className="flex items-center bg-[#020713] p-1 rounded-lg border border-cyan-500/20">
-            {(['OVERVIEW', 'TASKS', 'VAULT'] as const).map(tab => (
+            {(['OVERVIEW', 'TASKS', 'TERMINAL', 'VAULT'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => {
@@ -163,6 +164,15 @@ export function App() {
               >
                 RUN SCAN
               </button>
+              <button
+                onClick={() => {
+                  setActiveTab('TERMINAL');
+                  playSound('activate', soundEnabled);
+                }}
+                className="px-3 py-1.5 rounded-lg bg-cyan-950/80 hover:bg-cyan-900/80 border border-cyan-500/40 text-cyan-200 font-hud text-xs tracking-wider transition-all cursor-pointer"
+              >
+                CODE TERMINAL
+              </button>
             </div>
           </div>
 
@@ -219,6 +229,21 @@ export function App() {
                 soundEnabled={soundEnabled}
                 onTriggerAction={handleTriggerAction}
               />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'TERMINAL' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div className="lg:col-span-8">
+              <DevelopmentTerminal soundEnabled={soundEnabled} />
+            </div>
+            <div className="lg:col-span-4 space-y-4">
+              <SystemTelemetry
+                soundEnabled={soundEnabled}
+                onTriggerAction={handleTriggerAction}
+              />
+              <RegionalWidget soundEnabled={soundEnabled} />
             </div>
           </div>
         )}
